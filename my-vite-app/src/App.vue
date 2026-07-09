@@ -21,6 +21,10 @@ const loadingPlayerCount = ref(false)
 const errorMessage = ref('')
 const gameSortKey = ref<'name' | 'totalPlaytime' | 'recentPlaytime'>('totalPlaytime')
 const gameSortDirection = ref<'asc' | 'desc'>('desc')
+const steamAuthUrl = computed(() => {
+  const returnTo = typeof window === 'undefined' ? 'https://steam.tomthurston.dev/' : window.location.href
+  return `https://steam.tomthurston.dev/auth/steam?returnTo=${encodeURIComponent(returnTo)}`
+})
 
 type ApiSteamGame = {
   appid: number
@@ -351,7 +355,7 @@ onMounted(() => {
       <a v-if="isSignedIn" class="ghost-btn" href="#" @click.prevent="clearSignedInState()">
         Sign out
       </a>
-      <a v-else class="ghost-btn" :href="'https://steam.tomthurston.dev/auth/steam'" target="_blank" rel="noopener noreferrer">
+      <a v-else class="ghost-btn" :href="steamAuthUrl">
         Sign in
       </a>
     </header>
@@ -1235,4 +1239,3 @@ ul {
   }
 }
 </style>
-
